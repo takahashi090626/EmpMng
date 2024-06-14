@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="UTF-8">
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin="crossorigin">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ここにCSSスタイルを追加 */
+        /* テーブルのヘッダーに背景色を設定 */
+        th {
+            background-color: #343a40;
+            color: white;
+            cursor: pointer;
+            /* カーソルをポインターに変更してクリック可能であることを示す */
+        }
+
+        /* テーブルの奇数行に背景色を設定 */
+        tbody tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        /* ボタン */
+        .btn {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+    <title>検索画面</title>
+
+</head>
+<header class="header01">
+  <!-- ここにヘッダーの内容を追加 -->
+  <img
+      th:src="@{/img/sunseer-removebg-preview.png}"
+      width="270px"
+      onclick="location.href='http://localhost:8080/home'">
+
+  <nav class="header01-nav">
+      <ul class="header01-list">
+          <!-- ここにナビゲーションの内容を追加 -->
+
+          <a th:href="@{/add}" class="header01-item">新規登録はこちら</a>
+          <a th:href="@{/retirement}" class="header01-item">退職済みはこちら</a>
+          <a th:href="@{/data}" class="header01-item">データはこちら</a>
+          <a th:href="@{/search}" class="header01-item">検索はこちら</a>
+          <a th:href="@{/logout}" class="logout_btn_a">
+              <button class="logout_btn">
+                  <div class="sign">
+                      <svg viewbox="0 0 512 512">
+                          <path
+                              d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                      </svg>
+                  </div>
+
+                  <div class="text">Logout</div>
+              </button>
+          </a>
+      </ul>
+  </nav>
+</header>
+<body>
+  
+  <div>
+    <h2>検索画面</h2>
+
+    <div class="wave-group">
+        <form th:action="@{/resultName}" role="search" method="get">
+            <input class="input" type="text" id="search5" name="name" required=""/>
+            <span class="bar"></span>
+            <label class="label">
+                <span style="--index: 0" class="label-char">S</span>
+                <span style="--index: 1" class="label-char">e</span>
+                <span style="--index: 2" class="label-char">a</span>
+                <span style="--index: 3" class="label-char">r</span>
+                <span style="--index: 3" class="label-char">c</span>
+                <span style="--index: 3" class="label-char">h</span>
+            </label>
+        </form>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    <a
+                        th:href="@{/home(page=${currentPage}, sort=${sort == 'asc' && sortField == 'id' ? 'desc' : 'asc'}, sortField='id')}">
+                        社員ID
+                    </a>
+                </th>
+                <th>社員画像</th>
+                <th>
+                    <a
+                        th:href="@{/home(page=${currentPage}, sort=${sort == 'asc' && sortField == 'hira' ? 'desc' : 'asc'}, sortField='hira')}">
+                        氏名
+                    </a>
+                </th>
+                <th>
+                    <a
+                        th:href="@{/home(page=${currentPage}, sort=${sort == 'asc' && sortField == 'divisionkana' ? 'desc' : 'asc'}, sortField='divisionkana')}">
+                        部署
+                    </a>
+                </th>
+                <th>
+                    <a
+                        th:href="@{/home(page=${currentPage}, sort=${sort == 'asc' ? 'desc' : 'asc'})}">性別</a>
+                </th>
+                <th>詳細</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 行データを繰り返し表示 -->
+            <tr
+                th:each="employee : ${emplist}"
+                th:object="${employee}"
+                class="align-middle">
+                <td class="employee-info" th:text="*{id}"></td>
+                <td><img
+                    th:src="@{'/img/' + *{image}}"
+                    class="img_home"
+                    width="100px"
+                    height="100px"/></td>
+                <td class="employee-info" th:text="*{name}"></td>
+                <td class="employee-info" th:text="*{division}"></td>
+                <td class="employee-info" th:text="*{sex}"></td>
+                <td>
+                    <a th:href="@{/{id}(id=*{id})}" class="btn btn-secondary_home">詳細</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+  // フリーワード検索を行う関数
+  function searchTable() {
+      // 入力された検索ワードを取得
+      var keyword = document
+          .getElementById('search5')
+          .value
+          .toLowerCase();
+      // 検索ワードをセッションストレージに保存
+      sessionStorage.setItem('keyword', keyword);
+      // テーブルの行を取得
+      var rows = document.querySelectorAll('.table tbody tr');
+
+      // 各行を走査して検索ワードに一致する行のみを表示
+      rows.forEach(function (row) {
+          // テーブルセルのテキストを取得して小文字に変換
+          var text = row
+              .textContent
+              .toLowerCase();
+          // テーブルセルに検索ワードが含まれているか確認
+          if (text.includes(keyword)) {
+              // 検索ワードに一致する行を表示
+              row.style.display = '';
+          } else {
+              // 検索ワードに一致しない行を非表示にする
+              row.style.display = 'none';
+          }
+      });
+  }
+
+  // ページが読み込まれたときにフリーワード検索を実行
+  document.addEventListener('DOMContentLoaded', function () {
+      // フリーワード検索を実行するイベントリスナーを設定
+      document
+          .getElementById('search5')
+          .addEventListener('keyup', searchTable);
+      // セッションストレージから検索ワードを取得
+      var keyword = sessionStorage.getItem('keyword');
+      if (keyword) {
+          // 検索ワードを入力欄に設定
+          document
+              .getElementById('search5')
+              .value = keyword;
+          // 検索を実行
+          searchTable();
+      }
+  });
+</script>
+  
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>検索結果</title>
+</head>
+
+<body>
+    <h2>検索結果</h2>
+
+    <div th:if="${employee}">
+        <p>社員名: <span th:text="${employee.name}"></span></p>
+        <p>部署: <span th:text="${employee.division}"></span></p>
+        <p>性別: <span th:text="${employee.sex}"></span></p>
+        <!-- 他の必要な情報をここに追加 -->
+    </div>
+
+    <div th:if="${errorMessage}">
+        <p th:text="${errorMessage}"></p>
+    </div>
+</body>
+
+</html>

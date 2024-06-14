@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Retired Employees</title>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin="crossorigin">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap"
+            rel="stylesheet">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+        <script th:src="@{/js/script.js}"></script>
+        <script th:src="@{/js/search.js}"></script>
+        <style>
+            /* テーブルのヘッダーに背景色を設定 */
+            th {
+                background-color: #343a40;
+                color: white;
+                cursor: pointer;
+                /* マウスカーソルを変更してクリック可能であることを示す */
+            }
+
+            /* テーブルの奇数行に背景色を設定 */
+            tbody tr:nth-child(odd) {
+                background-color: #f2f2f2;
+            }
+
+            /* ボタン */
+            .btn {
+                background-color: #007bff;
+                color: white;
+            }
+        </style>
+        <title>退職済み画面</title>
+
+    </head>
+
+</head>
+<body>
+    <header class="header01">
+        <!-- ここにヘッダーの内容を追加 -->
+        <img
+            th:src="@{/img/sunseer-removebg-preview.png}"
+            width="270px"
+            onclick="location.href='http://localhost:8080/home'">
+      
+        <nav class="header01-nav">
+            <ul class="header01-list">
+                <!-- ここにナビゲーションの内容を追加 -->
+      
+                <a th:href="@{/add}" class="header01-item">新規登録はこちら</a>
+                <a th:href="@{/retirement}" class="header01-item">退職済みはこちら</a>
+                <a th:href="@{/data}" class="header01-item">データはこちら</a>
+                <a th:href="@{/search}" class="header01-item">検索画面はこちら</a>
+      
+                <a th:href="@{/logout}" class="logout_btn_a">
+                    <button class="logout_btn">
+                        <div class="sign">
+                            <svg viewbox="0 0 512 512">
+                                <path
+                                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                            </svg>
+                        </div>
+      
+                        <div class="text">Logout</div>
+                    </button>
+                </a>
+            </ul>
+        </nav>
+      </header>
+    <h2>退職済み社員一覧</h2>
+    <div class="wave-group">
+        <form th:action="@{/resultName}" role="search" method="get">
+            <input class="input" type="text" id="search5" name="name" required=""/>
+            <span class="bar"></span>
+            <label class="label">
+                <span style="--index: 0" class="label-char">S</span>
+                <span style="--index: 1" class="label-char">e</span>
+                <span style="--index: 2" class="label-char">a</span>
+                <span style="--index: 3" class="label-char">r</span>
+                <span style="--index: 3" class="label-char">c</span>
+                <span style="--index: 3" class="label-char">h</span>
+            </label>
+        </form>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="sort-asc" id="emp_c">社員ID</th>
+                <th id="emp_c">社員画像</th>
+                <th class="sort-asc" id="emp_c">
+                    <a
+                        th:href="@{/home(page=${currentPage}, sort=${sort == 'asc' ? 'desc' : 'asc'})}">氏名</th>
+                    <th class="sort-asc" id="emp_c">部署</th>
+                    <th class="sort-asc" id="emp_c">性別</th>
+                    <th id="emp_c">詳細</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through retired employees and display their information -->
+                <th:block th:each="employee : ${retiredEmployees}">
+                    <tr>
+                        <td class="employee-info" th:text="${employee.id}"></td>
+                        <td><img
+                            th:src="@{'/img/' + ${employee.image}}"
+                            class="img_home"
+                            width="100px"
+                            height="100px"/></td>
+                        <td class="employee-info" th:text="${employee.name}"></td>
+                        <td class="employee-info" th:text="${employee.division}"></td>
+                        
+                        <td class="employee-info" th:text="${employee.sex}"></td>
+                        <td>
+                            <form th:action="@{/unretire}" method="post">
+                                <input type="hidden" name="id" th:value="${employee.id}"/>
+                                <button type="submit" class="btn btn-secondary_home">復職</button>
+                            </form>
+                        </td>
+
+                    </tr>
+                </th:block>
+            </tbody>
+        </table>
+        <script>
+            // フリーワード検索を行う関数
+            function searchTable() {
+                // 入力された検索ワードを取得
+                var keyword = document
+                    .getElementById('search5')
+                    .value
+                    .toLowerCase();
+                // 検索ワードをセッションストレージに保存
+                sessionStorage.setItem('keyword', keyword);
+                // テーブルの行を取得
+                var rows = document.querySelectorAll('.table tbody tr');
+          
+                // 各行を走査して検索ワードに一致する行のみを表示
+                rows.forEach(function (row) {
+                    // テーブルセルのテキストを取得して小文字に変換
+                    var text = row
+                        .textContent
+                        .toLowerCase();
+                    // テーブルセルに検索ワードが含まれているか確認
+                    if (text.includes(keyword)) {
+                        // 検索ワードに一致する行を表示
+                        row.style.display = '';
+                    } else {
+                        // 検索ワードに一致しない行を非表示にする
+                        row.style.display = 'none';
+                    }
+                });
+            }
+          
+            // ページが読み込まれたときにフリーワード検索を実行
+            document.addEventListener('DOMContentLoaded', function () {
+                // フリーワード検索を実行するイベントリスナーを設定
+                document
+                    .getElementById('search5')
+                    .addEventListener('keyup', searchTable);
+                // セッションストレージから検索ワードを取得
+                var keyword = sessionStorage.getItem('keyword');
+                if (keyword) {
+                    // 検索ワードを入力欄に設定
+                    document
+                        .getElementById('search5')
+                        .value = keyword;
+                    // 検索を実行
+                    searchTable();
+                }
+            });
+          </script>
+
+    </body>
+</html>

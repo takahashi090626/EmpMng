@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            overflow: hidden;
+        }
+    </style>
+    <title>詳細画面</title>
+</head>
+
+<body>
+    <header class="header01">
+        <!-- ここにヘッダーの内容を追加 -->
+        <img
+            th:src="@{/img/sunseer-removebg-preview.png}"
+            width="270px"
+            onclick="location.href='http://localhost:8080/home'">
+      
+        <nav class="header01-nav">
+            <ul class="header01-list">
+                <!-- ここにナビゲーションの内容を追加 -->
+      
+                <a th:href="@{/add}" class="header01-item">新規登録はこちら</a>
+                <a th:href="@{/retirement}" class="header01-item">退職済みはこちら</a>
+                <a th:href="@{/data}" class="header01-item">データはこちら</a>
+                <a th:href="@{/search}" class="header01-item">検索画面はこちら</a>
+      
+                <a th:href="@{/logout}" class="logout_btn_a">
+                    <button class="logout_btn">
+                        <div class="sign">
+                            <svg viewbox="0 0 512 512">
+                                <path
+                                    d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                            </svg>
+                        </div>
+      
+                        <div class="text">Logout</div>
+                    </button>
+                </a>
+            </ul>
+        </nav>
+      </header>
+    <div class="wve-group">
+        <form th:action="@{/resultName}" role="search" method="get">
+
+            <input class="input" type="text" id="search5v" name="keyword" required=""/>
+            <span class="bar"></span>
+            <label class="label">
+                <span style="--index: 0" class="label-char">S</span>
+                <span style="--index: 1" class="label-char">e</span>
+                <span style="--index: 2" class="label-char">a</span>
+                <span style="--index: 3" class="label-char">r</span>
+                <span style="--index: 3" class="label-char">c</span>
+                <span style="--index: 3" class="label-char">h</span>
+            </label>
+        </form>
+    </div>
+    <div class="container">
+        <div class="employee-info-box">
+            <div class="rounded-img">
+                <img th:src="@{'/img/' + ${empData.image}}" alt="画像" style="width: 100%; height: auto;" />
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="name_v">氏名</h6>
+                <p class="employee-info" id="name_p" th:text="${empData.name}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="kana_v">カタカナ</h6>
+                <p class="employee-info" id="kana_p" th:text="${empData.hira}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="sex_v">性別</h6>
+                <p class="employee-info" id="sex_p" th:text="${empData.sex}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="busyo_v">部署</h6>
+                <p class="employee-info" id="busyo_p" th:text="${empData.division}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="busyo_v">部署(カタカナ)</h6>
+                <p class="employee-info" id="busyo_p" th:text="${empData.divisionkana}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="day_v">生年月日 (年齢)</h6>
+                <p class="employee-info" id="day_p"
+                    th:text="${#dates.format(empData.birth_date, 'yyyy年MM月dd日')} + ' (' + ${age} + '歳)'"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="mail_v">メールアドレス</h6>
+                <p class="employee-info" id="mail_p" th:text="${empData.email}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="phone_v">電話番号</h6>
+                <p class="employee-info" id="phone_p" th:text="${empData.phone}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="address_v">住所</h6>
+                <div class="address_namber">
+                    <p>〒</p>
+                    <p th:text="${empData.yubin}"></p>
+                </div>
+                <div class="address_text">
+                    <p class="employee-info" id="address_p" th:text="${empData.address}"></p>
+                    <p th:text="${empData.banchi}"></p>
+                </div>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="background_v">最終学歴</h6>
+                <p class="employee-info" id="background_p" th:text="${empData.background}"></p>
+            </div>
+            <div class="employee-info-item">
+                <h6 class="emp_d" id="skill_v">特技</h6>
+                <p class="employee-info" id="skill_p" th:text="${empData.skill}"></p>
+            </div>
+            <div class="text-center btn-group">
+                <a th:href="@{'/' + ${id} + '/edit'}" class="btn btn-primary">編集</a>
+                <a th:href="@{'/' + ${id} + '/soft-delete'}" class="btn btn-secondary"
+                    onclick="return confirm('退職させてもよろしいですか？')">退職</a>
+
+                <a th:href="@{/home}" class="btn btn-secondary last_btn-secondary">一覧に戻る</a>
+            </div>
+        </div>
+    </div>
+    <div class="search_view">
+
+        <div class="table-container">
+            <table class="table_view">
+                <tbody>
+                    <tr th:each="employee : ${emplist}" th:if="${employee.deleteFlg == false}" class="align-middle">
+                        <td class="employee-info-view" th:text="${employee.id}"></td>
+                        <td><img th:src="@{'/img/' + ${employee.image}}" width="100px" height="100px" /></td>
+                        <td class="employee-info-view" th:text="${employee.name}"></td>
+                        <td class="employee-info-view" th:text="${employee.division}"></td>
+                        <td class="employee-info-view" th:text="${employee.sex}"></td>
+                        <td>
+                            <a th:href="@{'/' + ${employee.id}}" class="btn btn-secondary">詳細</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // テーブル検索を行う関数
+        function searchTable() {
+            // 入力された検索ワードを取得
+            var keyword = document.getElementById('search5v').value.trim().toLowerCase();
+            // テーブルの行を取得
+            var rows = document.querySelectorAll('.table_view tbody tr');
+
+            // 各行を走査して検索ワードに一致する行のみを表示
+            rows.forEach(function (row) {
+                // テーブルセルのテキストを取得して小文字に変換
+                var text = row.textContent.trim().toLowerCase();
+                // テーブルセルに検索ワードが含まれているか確認
+                if (text.includes(keyword)) {
+                    // 検索ワードに一致する行を表示
+                    row.style.display = '';
+                } else {
+                    // 検索ワードに一致しない行を非表示にする
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // ページが読み込まれたときにテーブル検索を実行
+        document.addEventListener('DOMContentLoaded', function () {
+            // テーブル検索を実行するイベントリスナーを設定
+            document.getElementById('search5v').addEventListener('keyup', searchTable);
+        });
+    </script>
+
+</body>
+
+</html>
